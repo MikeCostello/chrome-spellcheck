@@ -29,6 +29,16 @@ function replaceMarkers(elm) {
   }
 }
 
+function toggleSpellCheck() {
+  document.body.classList.toggle('ext-spell-check');
+}
+
+chrome.runtime.onMessage.addListener(function(message, sender) {
+  if (message.command === 'toggle-spell-check') {
+    toggleSpellCheck();
+  }
+});
+
 textNodesUnder(document.body).forEach(function(n) {
   var text = n.nodeValue;
   var words = text.match(/[’'\w]+/g);
@@ -52,7 +62,7 @@ textNodesUnder(document.body).forEach(function(n) {
     replaceMarkers(pElm);
     pElm = elm;
   }
-
 });
 
 replaceMarkers(pElm);
+document.body.classList.add('ext-spell-check');
